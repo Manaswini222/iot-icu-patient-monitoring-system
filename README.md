@@ -30,3 +30,20 @@ A real-time, IoT-based system that monitors ICU patient vitals: heart rate, body
 - Blynk IoT Platform
 
 ---
+1.Install Arduino IDE and add ESP8266 board support.
+2.Install required libraries:
+  Blynk
+  HX711
+  MPU6050
+  OneWire
+  DallasTemperature
+3.Set up Blynk dashboard and get your Auth Token.
+4.Connect hardware as per the circuit diagram below.
+5.Upload code to ESP8266 via Arduino IDE.
+6.Monitor data on LCD and Blynk app.
+
+🤝 Team Members
+  S.Manaswini
+  M. Siddartha
+  B. Dhanush
+  K. Sharon Rose
