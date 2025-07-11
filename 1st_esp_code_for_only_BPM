@@ -1,0 +1,48 @@
+#define BLYNK_PRINT Serial
+#include <ESP8266WiFi.h>
+#include <BlynkSimpleEsp8266.h>
+
+char auth[] = "ZDFUm9jgtBEkglTH9SiC2Nv3reNfJEOy";
+char ssid[] = "Siddu";
+char pass[] = "12341234";
+
+#define PulsePin A0
+
+bool countStatus = false;
+int beat = 0, bpm = 0;
+unsigned long previousMillis = 0;
+
+BlynkTimer timer;
+
+void checkPulse() {
+  int sensorValue = analogRead(PulsePin);
+
+  if (!countStatus && sensorValue > 550) {
+    countStatus = true;
+    beat++;
+    Serial.println("💓 Beat Detected");
+  } else if (countStatus && sensorValue < 500) {
+    countStatus = false;
+  }
+
+  if (millis() - previousMillis >= 15000) {
+    bpm = beat * 4;
+    Serial.print("❤️ BPM: ");
+    Serial.println(bpm);
+    beat = 0;
+    previousMillis = millis();
+
+    Blynk.virtualWrite(V3, bpm);  // Send BPM to other ESP or display
+  }
+}
+
+void setup() {
+  Serial.begin(115200);
+  Blynk.begin(auth, ssid, pass, "blynk.cloud", 80);
+  timer.setInterval(10L, checkPulse);  // Check pulse every 10ms
+}
+
+void loop() {
+  Blynk.run();
+  timer.run();
+}
